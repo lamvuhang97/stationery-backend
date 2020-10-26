@@ -15,7 +15,6 @@ function getTokenFromHeader(req) {
 
 function isAuthenticated(req, res, next) {
 	try {
-		console.log("1");
 		if (_.isUndefined(req.headers.authorization)) {
             //requestHandler.throwError(401, 'Not Authorized to access this resource!')();
             return res.status(401).json('Not Authorized to access this resource!')
@@ -40,11 +39,9 @@ function isAuthenticated(req, res, next) {
                 return res.status(401).json('Please provide a valid token, your token might be expired')
 			}
 			req.decoded = decoded;
-			console.log('2');
 			next();
 
 		});
-		console.log('3');
 	} catch (error) {
         //requestHandler.sendFailure(res, 40001, error.message)();
         return res.status(401).json(error.message)

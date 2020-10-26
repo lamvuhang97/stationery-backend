@@ -9,8 +9,6 @@ class UserController {
       try {
         const tokenFromHeader = auth.getJwtToken(req)
         const account = jwt.decode(tokenFromHeader)
-        console.log('jsgdiuasd')
-        console.log(account);
         const user = await models.User.findOne({
           where: { id: Number(account.payload.id), status: true},
           include: [
@@ -33,7 +31,13 @@ class UserController {
 
     async getAllUsers(req, res) {
         try {
-          const users = await models.User.findAll()
+          const users = await models.User.findAll(
+            {
+              where: {
+                roleId: 2
+              }
+            }
+          )
           if (!users) {
             return res.status(200).json('Not found')
           }
@@ -55,10 +59,6 @@ class UserController {
               {
                 model: models.Role,
                 as: 'role'
-              },
-              {
-                model: models.Product,
-                as: 'products'
               }
             ]
           })
@@ -66,7 +66,7 @@ class UserController {
             return res.status(200).json('Not found')
           }
           const data = {}
-          user.dataValues.role = user.role.name // ddeer get role truc tiep bang user.role, khoong can user.role.name
+          user.dataValues.role = user.role.name 
           data.user = user
           return res.status(200).json(data)
         } catch (error) {
