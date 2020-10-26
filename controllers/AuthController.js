@@ -18,6 +18,8 @@ class AuthController {
 				return res.status(400).json("username not exit")
 			}
 			let isCorrect = false;
+			console.log(req.body.password);
+			console.log(user.password);
 			await bcrypt
 				.compare(req.body.password, user.password)
 				.then((result) => {

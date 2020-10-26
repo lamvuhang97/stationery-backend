@@ -89,7 +89,12 @@ class ProductController {
 
     async createProduct(req, res) {
         try {
+          const tokenFromHeader = auth.getJwtToken(req)
+          const account = jwt.decode(tokenFromHeader)
+          
           const data = req.body
+          data.ownerId = account.payload.id
+          
           const newProduct = await models.Product.create(data)
           if (!newProduct) {
             return res.status(400).json('Error')
