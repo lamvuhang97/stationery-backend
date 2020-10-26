@@ -12,4 +12,8 @@ router.get('/:id', cartController.getOneCart)
 
 router.get('/user/:id', cartController.getCartsByUser)
 
+router .post('/', cartController.createCart)
+
+router.put('/:id', cartController.updateCart)
+
 module.exports = router;

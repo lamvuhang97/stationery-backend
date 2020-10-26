@@ -68,5 +68,37 @@ class CartController {
         }
     }
 
+    async createCart(req, res) {  // check if exits => not done yet
+      try {
+        const data = req.body
+        const newCart = await models.Cart.create(data)
+        if (!newCart) {
+          return res.status(400).json('Error')
+        }
+        return res.status(200).json(newCart)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async updateCart(req, res) {
+      try {
+        const cart = await models.Cart.findOne({
+          where: {
+            id: Number(req.params.id),
+          },
+        });
+        cart.productId = req.body.productId;
+        cart.productAmount = req.body.productAmount;
+        if (cart.save()) {
+          return res.status(200).json(cart);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
+
+
 }
 module.exports = new CartController()

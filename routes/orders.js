@@ -14,7 +14,7 @@ router.get('/user/:id', orderController.getOrdersByUser)
 
 router.get('/owner/:id', orderController.getOrdersByOwner)
 
-router.post('/', orderController.createOder)
+router.post('/', orderController.createOrder)
 
 router.put('/:id', orderController.updateOrderStatus)
 

@@ -69,10 +69,45 @@ class UserController {
     }
 
     async getOrdersByOwner(req, res) {
+      try {
+          const orders = await models.Order.findAll({
+            // where: {
+            //   ownerId: Number(req.params.id)
+            // }, 
+            include: [
+              {
+                model: models.Orderdetail,
+                as: 'orderdetails',
+                include: 
+                [
+                  {
+                    model: models.Product,
+                    as: 'product'
+                  }
+                ]
+              }
+            ]
+          })
 
+          // filter orders by owner ==> not done yet
+          orders = orders.filter(order => 
+            order.orderdetails.filter(orderdetail => 
+              orderdetail.product.ownerId = Number(req.params.id)
+            )
+          )
+
+          if (!orders) {
+            return res.status(200).json('Not found')
+          }
+          const data = {}
+          data.orders = orders
+          return res.status(200).json(data)
+        } catch (error) {
+          return res.status(400).json(error.message)
+      }
     }
 
-    async createOder(req, res) {
+    async createOrder(req, res) {
         try {
             const data = req.body
             const newOrder = await models.Order.create(data)
@@ -80,9 +115,9 @@ class UserController {
               return res.status(400).json('Error')
             }
             return res.status(200).json(newOrder)
-          } catch (error) {
+        } catch (error) {
             return res.status(400).json(error.message)
-          }
+        }
     }
 
     async updateOrderStatus(req, res) {

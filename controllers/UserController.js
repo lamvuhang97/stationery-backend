@@ -76,23 +76,23 @@ class UserController {
 
     async createUser(req, res) {
         try {
-          //TODO: check user name unique
-          // const user = await models.User.findOne({
-          //   where: {
-          //     username: req.body.username
-          //   }
-          // })
-          // if(user) {
-          //   return res.status(400).json('Duplicate username')
-          // }
+          // TODO: check user name unique
+          const user = await models.User.findOne({
+            where: {
+              username: req.body.username
+            }
+          })
+          if(user) {
+            return res.status(400).json('Duplicate username')
+          }
           const data = req.body
           data.password = bcrypt.hashSync(data.password, config.auth.saltRounds);
           data.roleId = 2
-          const user = await models.User.create(data)
-          if (!user) {
+          const newUser = await models.User.create(data)
+          if (!newUser) {
             return res.status(400).json('Error')
           }
-          return res.status(200).json(user)
+          return res.status(200).json(newUser)
         } catch (error) {
           return res.status(400).json(error.message)
         }
