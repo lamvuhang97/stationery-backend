@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('Users', [
       {
         username: 'admin',
-        password: '$2y$12$29oFnKTDfyvr8GCD2icoh.GIiRcmiG1Ban/GtdUXMbkpoBT90L0Xu',
+        password: '$2b$10$.E9dpeaLAlBA.Em/DqB.x.jsrPzOSBTwXbVg4rdiK88ghoOMKDttW',
         email: 'admin@gmail.com',
         roleId: 1,
         phonenumber: '0123456789',
@@ -17,7 +17,7 @@ module.exports = {
       },
       {
         username: 'user01',
-        password: '$2y$12$29oFnKTDfyvr8GCD2icoh.GIiRcmiG1Ban/GtdUXMbkpoBT90L0Xu',
+        password: '$2b$10$.E9dpeaLAlBA.Em/DqB.x.jsrPzOSBTwXbVg4rdiK88ghoOMKDttW',
         email: 'user01@gmail.com',
         roleId: 2,
         phonenumber: '0123456788',
@@ -29,7 +29,7 @@ module.exports = {
       },
       {
         username: 'user02',
-        password: '$2y$12$29oFnKTDfyvr8GCD2icoh.GIiRcmiG1Ban/GtdUXMbkpoBT90L0Xu',
+        password: '$2b$10$.E9dpeaLAlBA.Em/DqB.x.jsrPzOSBTwXbVg4rdiK88ghoOMKDttW',
         email: 'user02@gmail.com',
         roleId: 2,
         phonenumber: '0123456787',
@@ -41,7 +41,7 @@ module.exports = {
       },
       {
         username: 'user03',
-        password: '$2y$12$29oFnKTDfyvr8GCD2icoh.GIiRcmiG1Ban/GtdUXMbkpoBT90L0Xu',
+        password: '$2b$10$.E9dpeaLAlBA.Em/DqB.x.jsrPzOSBTwXbVg4rdiK88ghoOMKDttW',
         email: 'user03@gmail.com',
         roleId: 2,
         phonenumber: '0123456786',

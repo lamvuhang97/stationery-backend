@@ -42,7 +42,7 @@ class UserController {
             return res.status(200).json('Not found')
           }
           const data = {}
-          data.users = users
+          data.data = users
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
