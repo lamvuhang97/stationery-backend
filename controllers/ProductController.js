@@ -7,12 +7,19 @@ const jwt = require('jsonwebtoken');
 class ProductController {
     async getAllProducts(req, res) {
         try {
-          const products = await models.Product.findAll()
+          const products = await models.Product.findAll({
+            include: [
+              {
+                  model: models.Category,
+                  as: 'category'
+              },
+            ]
+          })
           if (!products) {
             return res.status(200).json('Not found')
           }
           const data = {}
-          data.products = products
+          data.data = products
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
