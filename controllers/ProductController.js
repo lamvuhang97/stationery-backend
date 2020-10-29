@@ -4,10 +4,22 @@ const config = require('../config/app')
 const bcrypt = require('bcrypt');
 const auth = require('../utils/auth')
 const jwt = require('jsonwebtoken');
+var sequelize = require('sequelize')
+const Op = sequelize.Op;
 class ProductController {
     async getAllProducts(req, res) {
         try {
-          const products = await models.Product.findAll({
+          if(req.query.name !== undefined) {
+            var searchKey = req.query.name 
+          } else searchKey = ''
+          const products = await models.Product.findAndCountAll({
+            offset: Number(req.query.offset),
+            limit: Number(req.query.limit),
+            where: {
+              name: {
+                [Op.like]: '%' + searchKey + '%'
+              }
+            },
             include: [
               {
                   model: models.Category,

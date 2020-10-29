@@ -4,16 +4,28 @@ const config = require('../config/app')
 const bcrypt = require('bcrypt');
 const auth = require('../utils/auth')
 const jwt = require('jsonwebtoken');
+var sequelize = require('sequelize')
+const Op = sequelize.Op;
 class CategoryController {
     async getAllCategories(req, res) {
         try {
-          
-          const categories = await models.Category.findAll()
+          if(req.query.name !== undefined) {
+            var searchKey = req.query.name 
+          } else searchKey = ''
+          const categories = await models.Category.findAndCountAll({
+            offset: Number(req.query.offset),
+            limit: Number(req.query.limit),
+            where: {
+              name: {
+                [Op.like]: '%' + searchKey + '%'
+              }
+            },
+          })
           if (!categories) {
             return res.status(200).json('Not found')
           }
           const data = {}
-          data.categories = categories
+          data.data = categories
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)

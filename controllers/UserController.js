@@ -4,6 +4,8 @@ const config = require('../config/app')
 const bcrypt = require('bcrypt');
 const auth = require('../utils/auth')
 const jwt = require('jsonwebtoken');
+var sequelize = require('sequelize')
+const Op = sequelize.Op;
 class UserController {
     async getProfile(req, res) {
       try {
@@ -31,11 +33,19 @@ class UserController {
 
     async getAllUsers(req, res) {
         try {
-          const users = await models.User.findAll(
+          if(req.query.username !== undefined) {
+            var searchKey = req.query.username 
+          } else searchKey = ''
+          const users = await models.User.findAndCountAll(
             {
+              offset: Number(req.query.offset),
+              limit: Number(req.query.limit),
               where: {
-                roleId: 2
-              }
+                roleId: 2,
+                username: {
+                  [Op.like]: '%' + searchKey + '%'
+                }
+              },
             }
           )
           if (!users) {
