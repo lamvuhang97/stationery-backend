@@ -52,7 +52,11 @@ class ProductController {
                 {
                     model: models.User,
                     as: 'owner'
-                }
+                },
+                {
+                  model: models.Productimage,
+                  as: 'images'
+              }
             ]
           })
           if (!product) {
