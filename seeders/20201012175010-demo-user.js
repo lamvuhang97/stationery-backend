@@ -23,7 +23,7 @@ module.exports = {
         phonenumber: '0123456788',
         address: 'quang nam',
         status: true,
-        avatar: '',
+        avatar: 'https://firebasestorage.googleapis.com/v0/b/stationery-images.appspot.com/o/2b2b1110569856cc7b4962abf6695e9c.jpg?alt=media&token=40597ce4-f6b6-4ce5-b581-a01e1430bbcd',
         createdAt: new Date(),
         updatedAt: new Date()
       },
