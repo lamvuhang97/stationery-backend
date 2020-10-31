@@ -90,11 +90,11 @@ class UserController {
           })
 
           // filter orders by owner ==> not done yet
-          orders = orders.filter(order => 
-            order.orderdetails.filter(orderdetail => 
-              orderdetail.product.ownerId = Number(req.params.id)
-            )
-          )
+          // orders = orders.filter(order => 
+          //   order.orderdetails.filter(orderdetail => 
+          //     orderdetail.product.ownerId = Number(req.params.id)
+          //   )
+          // )
 
           if (!orders) {
             return res.status(200).json('Not found')

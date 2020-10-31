@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'productId',
         as: 'product'
       });
-      Productimage.hasOne(models.Image, {
+      Productimage.belongsTo(models.Image, {
         foreignKey: 'imageId',
-        as: 'image'
+        as: 'url'
       });
     }
   };

@@ -55,7 +55,11 @@ class ProductController {
                 },
                 {
                   model: models.Productimage,
-                  as: 'images'
+                  as: 'images',
+                  include: [{
+                    model: models.Image,
+                    as: 'url'
+                  }]
               }
             ]
           })
