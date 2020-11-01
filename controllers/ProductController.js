@@ -78,17 +78,31 @@ class ProductController {
 
     async getProductsByOwner(req, res) {
       try {
-        const products = await models.Product.findAll({
+        if(req.query.name !== undefined) {
+          var searchKey = req.query.name 
+        } else searchKey = ''
+        const products = await models.Product.findAndCountAll({
+          offset: Number(req.query.offset),
+          limit: Number(req.query.limit),
           where: {
-            ownerId: Number(req.params.id)
-          }
+            ownerId: Number(req.params.id),
+            name: {
+              [Op.like]: '%' + searchKey + '%'
+            }
+          },
+          include: [
+            {
+                model: models.Category,
+                as: 'category'
+            },
+          ]
         })
 
         if (!products) {
           return res.status(200).json('Not found')
         }
         const data = {}
-        data.products = products
+        data.data = products
         return res.status(200).json(data)
       } catch (error) {
         return res.status(400).json(error.message)

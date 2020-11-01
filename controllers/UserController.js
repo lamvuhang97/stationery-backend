@@ -119,6 +119,7 @@ class UserController {
         user.email = req.body.email;
         user.phonenumber = req.body.phonenumber;
         user.address = req.body.address;
+        user.avatar = req.body.avatar;
         if (user.save()) {
           return res.status(200).json(user);        
         }
