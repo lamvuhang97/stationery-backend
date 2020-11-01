@@ -98,6 +98,7 @@ class UserController {
           const data = req.body
           data.password = bcrypt.hashSync(data.password, config.auth.saltRounds);
           data.roleId = 2
+          data.status = true
           const newUser = await models.User.create(data)
           if (!newUser) {
             return res.status(400).json('Error')
