@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Categories', {
+    await queryInterface.createTable('Categorysums', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,13 +10,6 @@ module.exports = {
       },
       name: {
         type: Sequelize.STRING
-      },
-      categorysumId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categorysums',
-          key: 'id'
-        }
       },
       status: {
         type: Sequelize.BOOLEAN
@@ -32,6 +25,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Categories');
+    await queryInterface.dropTable('Categorysums');
   }
 };

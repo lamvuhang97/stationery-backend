@@ -2,34 +2,28 @@
 const {
   Model
 } = require('sequelize');
-const categorysum = require('./categorysum');
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {
+  class Categorysum extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Category.hasMany(models.Product, {
-        foreignKey: 'categoryId',
-        as: 'products'
-      });
-      Category.belongsTo(models.Categorysum, {
+      Categorysum.hasMany(models.Category, {
         foreignKey: 'categorysumId',
-        as: 'categorysum'
+        as: 'categorysub'
       })
     }
   };
-  Category.init({
+  Categorysum.init({
     name: DataTypes.STRING,
-    categorysumId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN
   }, {
     sequelize,
-    modelName: 'Category',
+    modelName: 'Categorysum',
   });
-  return Category;
+  return Categorysum;
 };
 
 
