@@ -60,7 +60,7 @@ class ProductController {
                     model: models.Image,
                     as: 'url'
                   }]
-              }
+                }
             ]
           })
           if (!product) {

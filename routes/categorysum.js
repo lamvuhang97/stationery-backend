@@ -16,7 +16,9 @@ router.use(function(req, res, next) {
 
 router.get('/', categorysumController.getAllCategorysum)
 
-router.get('/:id', categorysumController.getOneCategorysum)  // get one category and product in it
+router.get('/:name', categorysumController.getProductsByCategorysum)
+
+// router.get('/:id', categorysumController.getOneCategorysum)  // get one category and product in it
 
 router.post('/', categorysumController.createCategorysum)
 

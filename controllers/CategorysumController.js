@@ -38,6 +38,46 @@ class CategorysumController {
         }
     }
 
+    async getProductsByCategorysum(req, res) {
+      try {
+        const categorysum = await models.Categorysum.findOne({
+          where: {
+            name: req.params.name
+          },
+          include: [
+            {
+              model: models.Category,
+              as: 'categorysub',
+              include: [
+                {
+                  model: models.Product,
+                  as: 'products',
+                  include: [
+                    {
+                      model: models.Productimage,
+                      as: 'images',
+                      include: [{
+                        model: models.Image,
+                        as: 'url'
+                      }]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        })
+        if (!categorysum) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = categorysum
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     // chuwa cos association
     async getOneCategorysum(req, res) {
         try {
