@@ -20,6 +20,16 @@ class CategoryController {
                 [Op.like]: '%' + searchKey + '%'
               }
             },
+            include: [
+              {
+                model: models.Product,
+                as: 'products'
+              },
+              {
+                model: models.Categorysum,
+                as: 'categorysum' 
+              }
+            ]
           })
           if (!categories) {
             return res.status(200).json('Not found')

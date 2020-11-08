@@ -55,11 +55,9 @@ function isAdmin(req, res, next) {
 		if (account.payload.roleId === 1) {
 			next();
 		} else {
-            //requestHandler.throwError(401, 'No permission')();
             return res.status(401).json('No permission')
 		}
 	} catch (error) {
-        //requestHandler.sendFailure(res, 40001, error.message)();
         return res.status(401).json(error.message)
 	}
 }
