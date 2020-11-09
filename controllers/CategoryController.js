@@ -53,6 +53,10 @@ class CategoryController {
               {
                 model: models.Product,
                 as: 'products'
+              },
+              {
+                model: models.Categorysum,
+                as: 'categorysum'
               }
             ]
           })
@@ -60,7 +64,7 @@ class CategoryController {
             return res.status(200).json('Not found')
           }
           const data = {}
-          data.category = category
+          data.data = category
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
@@ -88,6 +92,7 @@ class CategoryController {
           },
         });
         category.name = req.body.name;
+        category.categorysumId = req.body.categorysumId
         if (category.save()) {
           return res.status(200).json(category);        
         }
