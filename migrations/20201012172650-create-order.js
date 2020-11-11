@@ -30,8 +30,13 @@ module.exports = {
           key: 'id'
         }
       },
-      totalPrice: {
-          type: Sequelize.DECIMAL
+      paymentId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Payments',
+          key: 'id'
+        }
       },
       orderNote: {
         type: Sequelize.STRING

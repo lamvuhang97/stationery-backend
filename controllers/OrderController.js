@@ -4,18 +4,45 @@ const config = require('../config/app')
 const bcrypt = require('bcrypt');
 const auth = require('../utils/auth')
 const jwt = require('jsonwebtoken');
+var sequelize = require('sequelize')
+const Op = sequelize.Op;
 class UserController {
     async getAllOrders(req, res) {
         try {
-            const orders = await models.Order.findAll()
-            if (!orders) {
-              return res.status(200).json('Not found')
-            }
-            const data = {}
-            data.orders = orders
-            return res.status(200).json(data)
-          } catch (error) {
-            return res.status(400).json(error.message)
+          if(req.query.id !== undefined) {
+            var searchKey = req.query.id 
+          } else searchKey = ''
+          const orders = await models.Order.findAndCountAll({
+            offset: Number(req.query.offset),
+            limit: Number(req.query.limit),
+            where: {
+              id: {
+                [Op.like]: '%' + searchKey + '%'
+              }
+            },
+            include: [
+              {
+                model: models.User,
+                as: 'user'
+              },
+              {
+                model: models.Payment,
+                as: 'payment'
+              },
+              {
+                model: models.Status,
+                as: 'status'
+              }
+            ]
+          })
+          if (!orders) {
+            return res.status(200).json('Not found')
+          }
+          const data = {}
+          data.data = orders
+          return res.status(200).json(data)
+        } catch (error) {
+          return res.status(400).json(error.message)
         }
     }
 

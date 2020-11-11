@@ -8,7 +8,7 @@ module.exports = {
         phonenumber: '0123456788',
         address: 'quang nam',
         statusId: 1,
-        totalPrice: 16400,
+        paymentId: 1,
         orderNote: 'ship gio hanh chinh',
         createdAt: new Date(),
         updatedAt: new Date()
@@ -18,7 +18,7 @@ module.exports = {
         phonenumber: '0123456786',
         address: 'qccc',
         statusId: 4,
-        totalPrice: 24200,
+        paymentId: 2,
         orderNote: null,
         createdAt: new Date(),
         updatedAt: new Date()

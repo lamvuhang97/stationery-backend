@@ -28,6 +28,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      productPrice: {
+        allowNull: false,
+        type: Sequelize.DECIMAL
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

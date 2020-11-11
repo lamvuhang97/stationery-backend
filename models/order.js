@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
             as: 'status'
         })
 
+        Order.belongsTo(models.Payment, {
+          foreignKey: 'paymentId',
+          as: 'payment'
+      })
+
         Order.belongsTo(models.User, {
           foreignKey: 'userId',
           as: 'user'
@@ -31,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     phonenumber: DataTypes.STRING,
     address: DataTypes.STRING,
     statusId: DataTypes.INTEGER,
-    totalPrice: DataTypes.DECIMAL,
+    paymentId: DataTypes.INTEGER,
     orderNote: DataTypes.STRING,
   }, {
     sequelize,
