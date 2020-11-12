@@ -69,7 +69,7 @@ class ProductController {
           const data = {}
           product.dataValues.category = product.category.name // ddeer get role truc tiep bang user.role, khoong can user.role.name
           product.dataValues.owner = product.owner.username 
-          data.product = product
+          data.data = product
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
@@ -125,6 +125,35 @@ class ProductController {
           }
         })
 
+        if (!products) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = products
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async getNewArrival(req, res) {
+      try {
+        const products = await models.Product.findAll({
+          order: [
+            ['createdAt', 'DESC'],
+          ],
+          limit: 3,
+          include: [
+            {
+              model: models.Productimage,
+              as: 'images',
+              include: [{
+                model: models.Image,
+                as: 'url'
+              }]
+            }
+          ]
+        })
         if (!products) {
           return res.status(200).json('Not found')
         }

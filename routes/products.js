@@ -13,6 +13,7 @@ router.use(function(req, res, next) {
 
 /* GET users listing. */
 // router.get('/profile', auth.isAuthenticated, userController.getProfile)
+router.get('/new-arrival', productController.getNewArrival)
 
 router.get('/', productController.getAllProducts)
 
