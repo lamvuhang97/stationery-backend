@@ -15,6 +15,10 @@ router.use(function(req, res, next) {
 // router.get('/profile', auth.isAuthenticated, userController.getProfile)
 router.get('/new-arrival', productController.getNewArrival)
 
+router.get('/best-seller', productController.getBestSeller)
+
+router.get('/group-id/:ids', productController.getProductByGroupIds)
+
 router.get('/', productController.getAllProducts)
 
 router.get('/:id', productController.getOneProduct)
