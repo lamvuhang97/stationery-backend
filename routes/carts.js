@@ -12,6 +12,7 @@ router.use(function(req, res, next) {
   });
 
 /* GET users listing. */
+router.get('/mycart', cartController.getMyCart)
 
 router.get('/', cartController.getAllCarts)
 

@@ -43,25 +43,75 @@ class CartController {
           const data = {}
           cart.dataValues.user = cart.user.username
           cart.dataValues.product = cart.product.name
-          data.cart = cart
+          data.data = cart
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
         }
     }
 
+    async getMyCart(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const carts = await models.Cart.findAll({
+            where: {
+                userId: Number(account.payload.id)
+            },
+            include: [
+              {
+                  model: models.Product,
+                  as: 'product',
+                  include: [
+                    {
+                      model: models.User,
+                      as: 'owner'
+                    },
+                    {
+                      model: models.Productimage,
+                      as: 'images',
+                      include: [{
+                        model: models.Image,
+                        as: 'url'
+                      }]
+                    }
+                  ]
+              }
+            ]
+        })
+        if (!carts) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = carts
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+  }
+
     async getCartsByUser(req, res) {
         try {
           const carts = await models.Cart.findAll({
               where: {
                   userId: Number(req.params.id)
-              }
+              },
+              include: [
+                {
+                    model: models.User,
+                    as: 'user' 
+                },
+                {
+                    model: models.Product,
+                    as: 'product'
+                }
+              ]
           })
           if (!carts) {
             return res.status(200).json('Not found')
           }
           const data = {}
-          data.carts = carts
+          data.data = carts
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
