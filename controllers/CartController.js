@@ -120,7 +120,24 @@ class CartController {
 
     async createCart(req, res) {  // check if exits => not done yet
       try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
         const data = req.body
+        const cart = await models.Cart.findOne({
+          where: {
+            userId: account.payload.id,
+            productId: req.body.productId
+          }
+        })
+        if(cart) {
+          cart.userId = account.payload.id
+          cart.productAmount = Number(cart.productAmount) + Number(req.body.productAmount) 
+          if (cart.save()) {
+            return res.status(200).json(cart);        
+          }
+          return res.status(400).json('Error');
+        }
+        data.userId = account.payload.id
         const newCart = await models.Cart.create(data)
         if (!newCart) {
           return res.status(400).json('Error')
