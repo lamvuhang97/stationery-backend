@@ -77,7 +77,7 @@ class UserController {
           }
           const data = {}
           user.dataValues.role = user.role.name 
-          data.user = user
+          data.data = user
           return res.status(200).json(data)
         } catch (error) {
           return res.status(400).json(error.message)
