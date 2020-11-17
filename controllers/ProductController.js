@@ -82,8 +82,8 @@ class ProductController {
           var searchKey = req.query.name 
         } else searchKey = ''
         const products = await models.Product.findAndCountAll({
-          offset: Number(req.query.offset),
-          limit: Number(req.query.limit),
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 1000,
           where: {
             ownerId: Number(req.params.id),
             name: {
@@ -95,6 +95,14 @@ class ProductController {
                 model: models.Category,
                 as: 'category'
             },
+            {
+              model: models.Productimage,
+              as: 'images',
+              include: [{
+                model: models.Image,
+                as: 'url'
+              }]
+            }
           ]
         })
 
