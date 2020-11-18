@@ -181,30 +181,41 @@ class ProductController {
           raw: true,
           order: sequelize.literal('total DESC'),
           limit: 3,
-          // include: [
-          //   {
-          //     model: models.Product,
-          //     as: 'product',
-          //     // include: [
-          //     //   {
-          //     //     model: models.Productimage,
-          //     //     as: 'images',
-          //     //     include: [
-          //     //       {
-          //     //       model: models.Image,
-          //     //       as: 'url'
-          //     //       }
-          //     //     ]
-          //     //   }
-          //     // ]
-          //   }
-          // ]
         })
         if (!products) {
           return res.status(200).json('Not found')
         }
         const data = {}
         data.data = products
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async getBestSellerProductsByOwner(req, res) {
+      try {
+        const products = await models.Orderdetail.findAll({
+          attributes: ['productId', [sequelize.fn('sum', sequelize.col('productAmount')), 'total']],
+          group : ['Orderdetail.productId'],
+          raw: true,
+          order: sequelize.literal('total DESC'),
+          // limit: 3,
+          include: [
+            {
+              model: models.Product,
+              as: 'product'
+            }
+          ]
+        })
+
+        if (!products) {
+          return res.status(200).json('Not found')
+        }
+        var productsFiltered = products.filter(item => item["product.ownerId"] == Number(req.params.id))
+        const data = {}
+        console.log(productsFiltered);
+        data.data = productsFiltered
         return res.status(200).json(data)
       } catch (error) {
         return res.status(400).json(error.message)
@@ -234,8 +245,17 @@ class ProductController {
         if (!products) {
           return res.status(200).json('Not found')
         }
+        var productsOrdered = []
+        for(var i of ids) {
+          for(var p of products) {
+            if(Number(p.id) == Number(i)) {
+              productsOrdered.push(p)
+              break
+            }
+          }
+        }
         const data = {}
-        data.data = products
+        data.data = productsOrdered
         return res.status(200).json(data)
       } catch (error) {
         return res.status(400).json(error.message)

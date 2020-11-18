@@ -23,6 +23,8 @@ router.get('/', productController.getAllProducts)
 
 router.get('/:id', productController.getOneProduct)
 
+router.get('/user/:id/best-seller', productController.getBestSellerProductsByOwner)
+
 router.get('/user/:id', productController.getProductsByOwner)
 
 router.get('/category/:id', productController.getProductsByCategory)
