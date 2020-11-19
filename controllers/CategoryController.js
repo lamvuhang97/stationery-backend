@@ -47,12 +47,22 @@ class CategoryController {
         try {
           const category = await models.Category.findOne({
             where: {
-              id: Number(req.params.id)
+              name: req.params.name
             },
             include: [
               {
                 model: models.Product,
-                as: 'products'
+                as: 'products',
+                include: [
+                  {
+                    model: models.Productimage,
+                    as: 'images',
+                    include: [{
+                      model: models.Image,
+                      as: 'url'
+                    }]
+                  }
+                ]
               },
               {
                 model: models.Categorysum,

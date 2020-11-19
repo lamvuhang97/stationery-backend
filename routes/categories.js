@@ -16,7 +16,7 @@ router.use(function(req, res, next) {
 
 router.get('/', categoryController.getAllCategories)
 
-router.get('/:id', categoryController.getOneCategory)  // get one category and product in it
+router.get('/:name', categoryController.getOneCategory)  // get one category and product in it
 
 router.post('/', categoryController.createCategory)
 

@@ -150,7 +150,7 @@ class ProductController {
           order: [
             ['createdAt', 'DESC'],
           ],
-          limit: 3,
+          limit: Number(req.query.limit) || 1000,
           include: [
             {
               model: models.Productimage,
@@ -180,7 +180,7 @@ class ProductController {
           group : ['Orderdetail.productId'],
           raw: true,
           order: sequelize.literal('total DESC'),
-          limit: 3,
+          limit: Number(req.query.limit) || 1000,
         })
         if (!products) {
           return res.status(200).json('Not found')
