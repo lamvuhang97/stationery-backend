@@ -165,6 +165,22 @@ class CartController {
       }
     }
 
+    async deleteCart(req, res) {
+      try {
+        const cart = await models.Cart.destroy({
+          where: {
+            id: Number(req.params.id),
+          },
+        });
+        
+        if (cart) {
+          return res.status(200).json(cart);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
 
 }
 module.exports = new CartController()
