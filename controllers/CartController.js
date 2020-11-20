@@ -155,7 +155,6 @@ class CartController {
             id: Number(req.params.id),
           },
         });
-        cart.productId = req.body.productId;
         cart.productAmount = req.body.productAmount;
         if (cart.save()) {
           return res.status(200).json(cart);        
