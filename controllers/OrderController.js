@@ -102,6 +102,10 @@ class UserController {
               as: 'user'
             },
             {
+              model: models.User,
+              as: 'owner'
+            },
+            {
               model: models.Payment,
               as: 'payment'
             },

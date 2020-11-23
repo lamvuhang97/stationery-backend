@@ -5,6 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('Orders', [
       {
         userId: 2,
+        ownerId : 3,
         phonenumber: '0123456788',
         address: 'quang nam',
         statusId: 1,
@@ -15,6 +16,7 @@ module.exports = {
       },
       {
         userId: 4,
+        ownerId: 2,
         phonenumber: '0123456786',
         address: 'qccc',
         statusId: 4,

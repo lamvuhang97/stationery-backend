@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
           as: 'user'
         })
 
+        Order.belongsTo(models.User, {
+          foreignKey: 'ownerId',
+          as: 'owner'
+        })
+
         Order.hasMany(models.Orderdetail, {
           foreignKey: 'orderId',
           as: 'orderdetails'
@@ -33,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   Order.init({
     userId: DataTypes.INTEGER,
+    ownerId: DataTypes.INTEGER,
     phonenumber: DataTypes.STRING,
     address: DataTypes.STRING,
     statusId: DataTypes.INTEGER,
