@@ -19,6 +19,8 @@ router.get('/best-seller', productController.getBestSeller)
 
 router.get('/group-id/:ids', productController.getProductByGroupIds)
 
+router.get('/my-product', productController.getMyProducts)
+
 router.get('/', productController.getAllProducts)
 
 router.get('/:id', productController.getOneProduct)

@@ -4,7 +4,8 @@ const config = require('../config/app')
 const bcrypt = require('bcrypt');
 const auth = require('../utils/auth')
 const jwt = require('jsonwebtoken');
-var sequelize = require('sequelize')
+var sequelize = require('sequelize');
+const { where } = require('sequelize');
 const Op = sequelize.Op;
 class UserController {
     async getAllOrders(req, res) {
@@ -74,6 +75,52 @@ class UserController {
           } catch (error) {
             return res.status(400).json(error.message)
         }
+    }
+
+    async getMyOrders(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        var wheretmp = {}
+        if(Number(req.params.status) !== 0) {
+          wheretmp = {
+            userId: Number(account.payload.id),
+            statusId: Number(req.params.status)
+          }
+        } else {
+          wheretmp = {
+            userId: Number(account.payload.id),
+          }
+        }
+        const orders = await models.Order.findAndCountAll({
+          where : wheretmp,
+          // offset: Number(req.query.offset),
+          // limit: Number(req.query.limit),
+          include: [
+            {
+              model: models.User,
+              as: 'user'
+            },
+            {
+              model: models.Payment,
+              as: 'payment'
+            },
+            {
+              model: models.Status,
+              as: 'status'
+            }
+          ]
+        })
+
+        if (!orders) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = orders
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+    }
     }
 
     async getOrdersByUser(req, res) {

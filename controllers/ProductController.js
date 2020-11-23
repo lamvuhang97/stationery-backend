@@ -76,6 +76,34 @@ class ProductController {
         }
     }
 
+    async getMyProducts(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const products = await models.Product.findAndCountAll({
+            where: {
+                ownerId: Number(account.payload.id)
+            },
+            offset: Number(req.query.offset),
+            limit: Number(req.query.limit),
+            include: [
+              {
+                  model: models.Category,
+                  as: 'category'
+              },
+            ]
+        })
+        if (!products) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = products
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async getProductsByOwner(req, res) {
       try {
         if(req.query.name !== undefined) {
