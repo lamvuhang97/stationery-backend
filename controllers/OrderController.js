@@ -77,7 +77,7 @@ class UserController {
         }
     }
 
-    async getMyOrders(req, res) {
+    async getMyTransaction(req, res) {
       try {
         const tokenFromHeader = auth.getJwtToken(req)
         const account = jwt.decode(tokenFromHeader)
@@ -90,6 +90,56 @@ class UserController {
         } else {
           wheretmp = {
             userId: Number(account.payload.id),
+          }
+        }
+        const orders = await models.Order.findAndCountAll({
+          where : wheretmp,
+          // offset: Number(req.query.offset),
+          // limit: Number(req.query.limit),
+          include: [
+            {
+              model: models.User,
+              as: 'user'
+            },
+            {
+              model: models.User,
+              as: 'owner'
+            },
+            {
+              model: models.Payment,
+              as: 'payment'
+            },
+            {
+              model: models.Status,
+              as: 'status'
+            }
+          ]
+        })
+
+        if (!orders) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = orders
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+    }
+    }
+
+    async getMyOrder(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        var wheretmp = {}
+        if(Number(req.params.status) !== 0) {
+          wheretmp = {
+            ownerId: Number(account.payload.id),
+            statusId: Number(req.params.status)
+          }
+        } else {
+          wheretmp = {
+            ownerId: Number(account.payload.id),
           }
         }
         const orders = await models.Order.findAndCountAll({
