@@ -13,6 +13,8 @@ router.use(function(req, res, next) {
 /* GET users listing. */
 router.get('/profile', auth.isAuthenticated, userController.getProfile)
 
+router.put('/profile', auth.isAuthenticated, userController.updateProfile)
+
 router.get('/', userController.getAllUsers)
 
 router.get('/:id', userController.getOneUser)

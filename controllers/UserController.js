@@ -31,6 +31,26 @@ class UserController {
       }
     }
 
+    async updateProfile(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const user = await models.User.findOne({
+          where: { id: Number(account.payload.id), status: true},
+        });
+        user.email = req.body.email;
+        user.phonenumber = req.body.phonenumber;
+        user.address = req.body.address;
+        user.avatar = req.body.avatar;
+        if (user.save()) {
+          return res.status(200).json(user);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
+
     async getAllUsers(req, res) {
         try {
           if(req.query.username !== undefined) {

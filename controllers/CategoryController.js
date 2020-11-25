@@ -13,8 +13,8 @@ class CategoryController {
             var searchKey = req.query.name 
           } else searchKey = ''
           const categories = await models.Category.findAndCountAll({
-            offset: Number(req.query.offset),
-            limit: Number(req.query.limit),
+            offset: Number(req.query.offset) || 0,
+            limit: Number(req.query.limit) || 100,
             where: {
               name: {
                 [Op.like]: '%' + searchKey + '%'
