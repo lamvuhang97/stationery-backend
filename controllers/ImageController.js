@@ -34,5 +34,31 @@ class ImageController {
             return res.status(400).json(error.message)
         }
     }
+
+    async getImageByProduct(req, res) {
+        try {
+            const images = await models.Productimage.findAll({
+              where: {
+                productId: Number(req.params.productId),
+              },
+              include: [
+                  {
+                    model: models.Image,
+                    as: 'url'
+                  }
+              ]
+            })
+    
+            if (!images) {
+              return res.status(200).json('Not found')
+            }
+            // images.dataValues.url = images.url.url
+            const data = {}
+            data.data = images
+            return res.status(200).json(data)
+          } catch (error) {
+            return res.status(400).json(error.message)
+        }
+    }
 }
 module.exports = new ImageController()

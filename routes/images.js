@@ -15,6 +15,8 @@ router.post('/product-image', imageController.postProductImage)
 
 router.post('/', imageController.postImageUrl)
 
+router.get('/product/:productId', imageController.getImageByProduct)
+
 
 
 module.exports = router;
