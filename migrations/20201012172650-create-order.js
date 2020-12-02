@@ -49,6 +49,12 @@ module.exports = {
       orderNote: {
         type: Sequelize.STRING
       },
+      total: {
+        type: Sequelize.DECIMAL
+      },
+      ship: {
+        type: Sequelize.DECIMAL
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

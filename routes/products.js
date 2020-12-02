@@ -21,6 +21,10 @@ router.get('/group-id/:ids', productController.getProductByGroupIds)
 
 router.get('/my-product', productController.getMyProducts)
 
+router.get('/search', productController.searchProduct)
+
+router.get('/my-product/analyze', productController.getProductAnalyze)
+
 router.get('/', productController.getAllProducts)
 
 router.get('/:id', productController.getOneProduct)
@@ -33,7 +37,7 @@ router.get('/category/:id', productController.getProductsByCategory)
 
 router.post('/', productController.createProduct)
 
-// router.put('/:id', userController.updateUser)
+router.put('/:id', productController.updateProduct)
 
 // router.delete('/:id', auth.isAuthenticated, auth.isAdmin, userController.deleteUSer)
 

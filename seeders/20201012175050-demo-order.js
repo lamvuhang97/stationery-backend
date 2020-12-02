@@ -11,6 +11,8 @@ module.exports = {
         statusId: 1,
         paymentId: 1,
         orderNote: 'ship gio hanh chinh',
+        total: 6400,
+        ship: 20000,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -22,6 +24,8 @@ module.exports = {
         statusId: 4,
         paymentId: 2,
         orderNote: null,
+        total: 24200,
+        ship: 20000,
         createdAt: new Date(),
         updatedAt: new Date()
       },

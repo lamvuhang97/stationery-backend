@@ -15,6 +15,8 @@ router.get('/profile', auth.isAuthenticated, userController.getProfile)
 
 router.put('/profile', auth.isAuthenticated, userController.updateProfile)
 
+router.get('/search', userController.searchUser)
+
 router.get('/', userController.getAllUsers)
 
 router.get('/:id', userController.getOneUser)

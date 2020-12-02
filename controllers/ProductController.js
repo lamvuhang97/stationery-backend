@@ -250,7 +250,7 @@ class ProductController {
       }
     }
 
-    async getProductByGroupIds(req, res) {  // not done yet  => chua theo order 
+    async getProductByGroupIds(req, res) {  
       try {
         var ids = (req.params.ids).split(",")
         const products = await models.Product.findAll({
@@ -290,6 +290,70 @@ class ProductController {
       }
     }
 
+    async getProductAnalyze(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const product = await models.Product.findAll({
+          where: {
+            ownerId: Number(account.payload.id) 
+          },
+          attributes: ['status', [sequelize.fn('count', sequelize.col('status')), 'number']],
+          group : ['status'],
+        })
+        if (!product) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        const sold = await models.Product.findAndCountAll({
+          where: {
+            ownerId: Number(account.payload.id),
+            quantity: 0
+          }
+        })
+        var soldNum = sold.count
+        data.data = product
+        data.sold = soldNum
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async searchProduct(req, res) {
+      try {
+        const products = await models.Product.findAndCountAll({
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 1000,
+          where: {
+            name: {
+              [Op.like]: '%' + req.query.searchkey + '%'
+            }
+          },
+          include: [
+            {
+              model: models.Productimage,
+              as: 'images',
+              include: [
+                {
+                model: models.Image,
+                as: 'url'
+                }
+              ]
+            }
+          ]
+        })
+        if (!products) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = products
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async createProduct(req, res) {
         try {
           const tokenFromHeader = auth.getJwtToken(req)
@@ -306,6 +370,29 @@ class ProductController {
         } catch (error) {
           return res.status(400).json(error.message)
         }
+    }
+
+    async updateProduct(req, res) {
+      try {
+        const product = await models.Product.findOne({
+          where: {
+            id: Number(req.params.id),
+          },
+        });
+        product.name = req.body.name;
+        product.categoryId = req.body.categoryId;
+        product.price = req.body.price;
+        product.quantity = req.body.quantity;
+        product.description = req.body.description;
+        product.sold = req.body.sold;
+        product.weight = req.body.weight;
+        if (product.save()) {
+          return res.status(200).json(product);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
     }
 
 }

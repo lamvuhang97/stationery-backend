@@ -35,6 +35,23 @@ class ImageController {
         }
     }
 
+    async deleteProductImage(req, res) {
+      try {
+        const productimage = await models.Productimage.destroy({
+          where: {
+            imageId : Number(req.params.imageId),
+          },
+        });
+        
+        if (productimage) {
+          return res.status(200).json(productimage);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
+
     async getImageByProduct(req, res) {
         try {
             const images = await models.Productimage.findAll({

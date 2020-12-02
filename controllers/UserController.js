@@ -149,6 +149,29 @@ class UserController {
       }
     }
 
+    async searchUser(req, res) {
+      try {
+        const users = await models.User.findAndCountAll({
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 1000,
+          where: {
+            username: {
+              [Op.like]: '%' + req.query.searchkey + '%'
+            }
+          },
+        })
+        if (!users) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = users
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+
     async deleteUser(req, res) {
       try {
         const user = await models.User.findOne({

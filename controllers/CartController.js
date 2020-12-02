@@ -118,7 +118,7 @@ class CartController {
         }
     }
 
-    async createCart(req, res) {  // check if exits => not done yet
+    async createCart(req, res) { 
       try {
         const tokenFromHeader = auth.getJwtToken(req)
         const account = jwt.decode(tokenFromHeader)

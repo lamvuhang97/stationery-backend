@@ -11,6 +11,8 @@ module.exports = {
         quantity: 23,
         description: 'book book book book book book',
         status: true,
+        sold: 1, 
+        weight: 300,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -22,6 +24,8 @@ module.exports = {
         quantity: 15,
         description: 'book2 book2 book2 book2 book book',
         status: true,
+        sold: 1, 
+        weight: 400,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -33,6 +37,8 @@ module.exports = {
         quantity: 45,
         description: 'pen pen pen pen pen',
         status: true,
+        sold: 2, 
+        weight: 120,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -44,6 +50,8 @@ module.exports = {
         quantity: 100,
         description: 'paperpaper paper paper paper',
         status: true,
+        sold: 1, 
+        weight: 200,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -55,6 +63,8 @@ module.exports = {
         quantity: 2,
         description: 'book3 book 3book3 3book3 book book',
         status: true,
+        sold: 0, 
+        weight: 300,
         createdAt: new Date(),
         updatedAt: new Date()
       },

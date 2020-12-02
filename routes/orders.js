@@ -17,6 +17,10 @@ router.get('/', orderController.getAllOrders)
 
 router.get('/my-transaction/:status', orderController.getMyTransaction)
 
+router.get('/my-order/analyze', orderController.getOrderAnalyze)
+
+router.get('/my-order/sale-analyze', orderController.getSaleAnalyze)
+
 router.get('/my-order/:status', orderController.getMyOrder)
 
 router.get('/:id', orderController.getOneOrder)

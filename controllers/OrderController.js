@@ -235,6 +235,85 @@ class UserController {
       }
     }
 
+    async getOrderAnalyze(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const order = await models.Order.findAll({
+          where: {
+            ownerId: Number(account.payload.id) 
+          },
+          attributes: ['statusId', [sequelize.fn('count', sequelize.col('statusId')), 'number']],
+          group : ['statusId'],
+        })
+        if (!order) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = order
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async getSaleAnalyze(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+        const day = await models.Order.findAll({
+          where: {
+            ownerId: Number(account.payload.id),
+            statusId: 4,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date()
+            }
+          }
+        })
+
+        const week = await models.Order.findAll({
+          where: {
+            ownerId: Number(account.payload.id),
+            statusId: 4,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 7*24 * 60 * 60 * 1000)
+            }
+          }
+        })
+
+        const month = await models.Order.findAll({
+          where: {
+            ownerId: Number(account.payload.id),
+            statusId: 4,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 30*24 * 60 * 60 * 1000)
+            }
+          }
+        })
+
+        const sum = await models.Order.findAll({
+          where: {
+            ownerId: Number(account.payload.id),
+            statusId: 4
+          }
+        })
+        var sale = {
+          day: day,
+          week: week,
+          month: month,
+          sum: sum
+        }
+        const data = {}
+        data.data = sale
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async createOrder(req, res) {
         try {
             const data = req.body

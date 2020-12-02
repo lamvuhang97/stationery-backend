@@ -5,20 +5,6 @@ module.exports = {
     return queryInterface.bulkInsert('Carts', [
       {
         userId: 2,
-        productId: 1,
-        productAmount: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        userId: 2,
-        productId: 2,
-        productAmount: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        userId: 2,
         productId: 3,
         productAmount: 4,
         createdAt: new Date(),
