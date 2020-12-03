@@ -14,6 +14,7 @@ var ordersRouter = require('./routes/orders');
 var orderdetailsRouter = require('./routes/orderdetails');
 var cartsRouter = require('./routes/carts');
 var imageRouter = require('./routes/images');
+var paypalRouter = require('./routes/paypal');
 
 var app = express();
 
@@ -37,6 +38,39 @@ app.use('/orders', ordersRouter);
 app.use('/orderdetails', orderdetailsRouter);
 app.use('/carts', cartsRouter);
 app.use('/images', imageRouter);
+app.use('/paypal', paypalRouter);
+
+app.post("/webhook", async (req, res) => {
+  // console.log("app", req.body);
+  const type = req.body.event_type;
+  const paypalPayoutId = req.body.resource.payout_batch_id;
+  const paypalTransactionId = req.body.resource.transaction_id;
+
+  console.log(type, paypalPayoutId, req.body);
+  switch (type) {
+    case "PAYMENT.PAYOUTS-ITEM.SUCCEEDED":
+      console.log(type, paypalPayoutId, req.body);
+      // await transactionController.updateSuccessfulTransaction(
+      //   paypalPayoutId,
+      //   paypalTransactionId
+      // );
+      break;
+    case "PAYMENT.PAYOUTS-ITEM.UNCLAIMED":
+      console.log(type, paypalPayoutId, req.body);
+      // await transactionController.updateUnclaimedTransaction(
+      //   paypalPayoutId,
+      //   paypalTransactionId
+      // );
+      break;
+    case "PAYMENT.PAYOUTS-ITEM.FAILED":
+      console.log(type, paypalPayoutId, req.body);
+      // await transactionController.updateFailedTransaction(
+      //   paypalPayoutId,
+      //   paypalTransactionId
+      // );
+      break;
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
