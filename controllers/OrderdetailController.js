@@ -60,6 +60,23 @@ class OrderdetailController {
         }
     }
 
+    async updateIsReview(req, res) {
+        try {
+            const order = await models.Orderdetail.findOne({
+                where: {
+                    id: Number(req.params.id),
+                },
+            });
+            order.isReview = Number(req.body.status)
+            if (order.save()) {
+                return res.status(200).json(order);        
+              }
+              return res.status(400).json('Error');
+            } catch (error) {
+              return res.status(400).json(error.message);
+        }
+    }
+
     async createOrderdetail(req, res) {
         try {
             const data = req.body

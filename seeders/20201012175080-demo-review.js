@@ -12,7 +12,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        productId: 3,
+        productId: 2,
         userId: 4,
         rate: 5,
         content: 'hang giong hinh',

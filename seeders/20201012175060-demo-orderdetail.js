@@ -8,6 +8,7 @@ module.exports = {
         productId: 3,
         productAmount: 2,
         productPrice: 3200,
+        isReview: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -16,6 +17,7 @@ module.exports = {
         productId: 1,
         productAmount: 1,
         productPrice: 10000,
+        isReview: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -24,6 +26,7 @@ module.exports = {
         productId: 2,
         productAmount: 1,
         productPrice: 3200,
+        isReview: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -32,6 +35,7 @@ module.exports = {
         productId: 4,
         productAmount: 1,
         productPrice: 11000,
+        isReview: true,
         createdAt: new Date(),
         updatedAt: new Date()
       },

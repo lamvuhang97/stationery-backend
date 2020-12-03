@@ -32,6 +32,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL
       },
+      isReviewd: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

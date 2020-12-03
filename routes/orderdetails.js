@@ -21,4 +21,6 @@ router.get('/order/:id', orderdetailController.getOrderdetailsByOrder)
 
 router.post('/', orderdetailController.createOrderdetail)
 
+router.put('/:id', orderdetailController.updateIsReview)
+
 module.exports = router;
