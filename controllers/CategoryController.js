@@ -45,13 +45,19 @@ class CategoryController {
     // chuwa cos association
     async getOneCategory(req, res) {
         try {
+          // if(req.query.name !== undefined) {
+          //   var searchKey = req.query.name 
+          // } else searchKey = ''
           const category = await models.Category.findOne({
+            
             where: {
-              name: req.params.name
+              name: req.params.name,
             },
             include: [
               {
                 model: models.Product,
+                offset: Number(req.query.offset) || 0,
+                limit: Number(req.query.limit) || 15,
                 as: 'products',
                 include: [
                   {

@@ -111,7 +111,7 @@ class ProductController {
         } else searchKey = ''
         const products = await models.Product.findAndCountAll({
           offset: Number(req.query.offset) || 0,
-          limit: Number(req.query.limit) || 1000,
+          limit: Number(req.query.limit) || 15,
           where: {
             ownerId: Number(req.params.id),
             name: {
@@ -151,14 +151,24 @@ class ProductController {
           var searchKey = req.query.name 
         } else searchKey = ''
         const products = await models.Product.findAndCountAll({
-          offset: Number(req.query.offset),
-          limit: Number(req.query.limit),
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 15,
           where: {
             categoryId: Number(req.params.id),
             name: {
               [Op.like]: '%' + searchKey + '%'
             }
-          }
+          },
+          include: [
+            {
+              model: models.Productimage,
+              as: 'images',
+              include: [{
+                model: models.Image,
+                as: 'url'
+              }]
+            }
+          ]
         })
 
         if (!products) {
@@ -174,11 +184,12 @@ class ProductController {
 
     async getNewArrival(req, res) {
       try {
-        const products = await models.Product.findAll({
+        const products = await models.Product.findAndCountAll({
           order: [
             ['createdAt', 'DESC'],
           ],
-          limit: Number(req.query.limit) || 1000,
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 15,
           include: [
             {
               model: models.Productimage,
@@ -203,12 +214,22 @@ class ProductController {
 
     async getBestSeller(req, res) {
       try {
-        const products = await models.Orderdetail.findAll({
-          attributes: ['productId', [sequelize.fn('sum', sequelize.col('productAmount')), 'total']],
-          group : ['Orderdetail.productId'],
-          raw: true,
-          order: sequelize.literal('total DESC'),
-          limit: Number(req.query.limit) || 1000,
+        const products = await models.Product.findAndCountAll({
+          order: [
+            ['sold', 'DESC'],
+          ],
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 15,
+          include: [
+            {
+              model: models.Productimage,
+              as: 'images',
+              include: [{
+                model: models.Image,
+                as: 'url'
+              }]
+            }
+          ]
         })
         if (!products) {
           return res.status(200).json('Not found')
@@ -221,6 +242,27 @@ class ProductController {
       }
     }
 
+    // async getBestSeller(req, res) {
+    //   try {
+    //     const products = await models.Orderdetail.findAll({
+    //       attributes: ['productId', [sequelize.fn('sum', sequelize.col('productAmount')), 'total']],
+    //       group : ['Orderdetail.productId'],
+    //       raw: true,
+    //       order: sequelize.literal('total DESC'),
+    //       offset: Number(req.query.offset) || 0,
+    //       limit: Number(req.query.limit) || 15,
+    //     })
+    //     if (!products) {
+    //       return res.status(200).json('Not found')
+    //     }
+    //     const data = {}
+    //     data.data = products
+    //     return res.status(200).json(data)
+    //   } catch (error) {
+    //     return res.status(400).json(error.message)
+    //   }
+    // }
+
     async getBestSellerProductsByOwner(req, res) {
       try {
         const products = await models.Orderdetail.findAll({
@@ -228,7 +270,8 @@ class ProductController {
           group : ['Orderdetail.productId'],
           raw: true,
           order: sequelize.literal('total DESC'),
-          // limit: 3,
+          offset: Number(req.query.offset) || 0,
+          limit: Number(req.query.limit) || 15,
           include: [
             {
               model: models.Product,

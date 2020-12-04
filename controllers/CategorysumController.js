@@ -44,6 +44,7 @@ class CategorysumController {
           where: {
             name: req.params.name
           },
+          
           include: [
             {
               model: models.Category,
@@ -52,6 +53,8 @@ class CategorysumController {
                 {
                   model: models.Product,
                   as: 'products',
+                  offset: Number(req.query.offset) || 0,
+                  limit: Number(req.query.limit) || 3,
                   include: [
                     {
                       model: models.Productimage,
