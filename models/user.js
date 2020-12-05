@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'orders'
       });
+      User.hasMany(models.Address, {
+        foreignKey: 'userId',
+        as: 'address'
+      });
       // User.hasMany(models.Order, {
       //   foreignKey: 'ownerId',
       //   as: 'orders'
@@ -37,8 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     email: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
-    phonenumber: DataTypes.STRING,
-    address: DataTypes.STRING,
     status: DataTypes.BOOLEAN,
     avatar: DataTypes.STRING
   }, {

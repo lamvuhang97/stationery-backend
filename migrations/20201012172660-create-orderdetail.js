@@ -32,7 +32,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DECIMAL
       },
-      isReviewd: {
+      isReview: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
