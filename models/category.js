@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const categorysum = require('./categorysum');
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     /**
@@ -15,15 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'categoryId',
         as: 'products'
       });
-      Category.belongsTo(models.Categorysum, {
-        foreignKey: 'categorysumId',
-        as: 'categorysum'
-      })
     }
   };
   Category.init({
     name: DataTypes.STRING,
-    categorysumId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN
   }, {
     sequelize,

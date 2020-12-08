@@ -24,10 +24,6 @@ class CategoryController {
               {
                 model: models.Product,
                 as: 'products'
-              },
-              {
-                model: models.Categorysum,
-                as: 'categorysum' 
               }
             ]
           })
@@ -69,10 +65,6 @@ class CategoryController {
                     }]
                   }
                 ]
-              },
-              {
-                model: models.Categorysum,
-                as: 'categorysum'
               }
             ]
           })
@@ -108,7 +100,6 @@ class CategoryController {
           },
         });
         category.name = req.body.name;
-        category.categorysumId = req.body.categorysumId
         if (category.save()) {
           return res.status(200).json(category);        
         }

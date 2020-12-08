@@ -11,13 +11,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      categorysumId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Categorysums',
-          key: 'id'
-        }
-      },
       status: {
         type: Sequelize.BOOLEAN
       },
