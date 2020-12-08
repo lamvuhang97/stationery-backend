@@ -31,7 +31,7 @@ router.get('/owner/:id', orderController.getOrdersByOwner)
 
 router.post('/', orderController.createOrder)
 
-router.put('/:id', orderController.updateOrderStatus)
+router.put('/:id', orderController.updateOrder)
 
 // router.delete('/:id', auth.isAuthenticated, auth.isAdmin, orderController.deleteUser)
 

@@ -114,6 +114,10 @@ class ProductController {
           limit: Number(req.query.limit) || 15,
           where: {
             ownerId: Number(req.params.id),
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
             name: {
               [Op.like]: '%' + searchKey + '%'
             }
@@ -155,6 +159,10 @@ class ProductController {
           limit: Number(req.query.limit) || 15,
           where: {
             categoryId: Number(req.params.id),
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
             name: {
               [Op.like]: '%' + searchKey + '%'
             }
@@ -188,6 +196,12 @@ class ProductController {
           order: [
             ['createdAt', 'DESC'],
           ],
+          where: {
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
+          },
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
           include: [
@@ -218,6 +232,12 @@ class ProductController {
           order: [
             ['sold', 'DESC'],
           ],
+          where: {
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
+          },
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
           include: [
@@ -269,6 +289,12 @@ class ProductController {
           attributes: ['productId', [sequelize.fn('sum', sequelize.col('productAmount')), 'total']],
           group : ['Orderdetail.productId'],
           raw: true,
+          where: {
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
+          },
           order: sequelize.literal('total DESC'),
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
@@ -369,6 +395,10 @@ class ProductController {
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 1000,
           where: {
+            status : true,
+            quantity : {
+              [Op.gt] : 0
+            },
             name: {
               [Op.like]: '%' + req.query.searchkey + '%'
             }

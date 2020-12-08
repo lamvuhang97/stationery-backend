@@ -327,14 +327,16 @@ class UserController {
         }
     }
 
-    async updateOrderStatus(req, res) {
+    async updateOrder(req, res) {
         try {
             const order = await models.Order.findOne({
                 where: {
                     id: Number(req.params.id),
                 },
             });
-            order.statusId = Number(req.body.id)
+            order.statusId = Number(req.body.statusId)
+            order.ownerAdd = req.body.ownerAdd
+            order.ownerPhone = req.body.ownerPhone
             if (order.save()) {
                 return res.status(200).json(order);        
               }

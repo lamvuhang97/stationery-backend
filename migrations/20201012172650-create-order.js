@@ -1,4 +1,7 @@
 'use strict';
+
+const { UnavailableForLegalReasons } = require("http-errors");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Orders', {
@@ -54,6 +57,12 @@ module.exports = {
       },
       ship: {
         type: Sequelize.DECIMAL
+      },
+      ownerAdd: {
+        type: Sequelize.STRING
+      },
+      ownerPhone: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

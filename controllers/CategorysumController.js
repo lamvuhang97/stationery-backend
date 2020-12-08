@@ -55,6 +55,12 @@ class CategorysumController {
                   as: 'products',
                   offset: Number(req.query.offset) || 0,
                   limit: Number(req.query.limit) || 3,
+                  // where: {
+                  //   status : true,
+                  //   quantity : {
+                  //     [Op.gt] : 0
+                  //   },
+                  // },
                   include: [
                     {
                       model: models.Productimage,
