@@ -154,9 +154,62 @@ class ProductController {
         if(req.query.name !== undefined) {
           var searchKey = req.query.name 
         } else searchKey = ''
+        if(req.query.sort !== undefined) {
+          switch(req.query.sort) {
+            case "new" : 
+              var sortBy = 'createdAt';
+              var dic = 'DESC'
+              break;
+            case "sell" :
+              var sortBy = 'sold';
+              var dic = 'DESC'
+              break;
+            case "down" :
+              var sortBy = 'price';
+              var dic = 'DESC';
+              break;
+            case "up" :
+              var sortBy = 'price';
+              var dic = 'ASC'
+          }
+        } else {
+          var sortBy = 'sold';
+              var dic = 'DESC'
+        }
+        if(req.query.price !== undefined) {
+          switch(req.query.price) {
+            case "0" :
+              var min = 0;
+              var max = 100000;
+              break;
+            case "1" :
+              var min = 0;
+              var max = 10000;
+              break;
+            case "2" :
+              var min = 10000;
+              var max = 20000;
+              break;
+            case "3" :
+              var min = 20000;
+              var max = 30000;
+              break;
+            case "4" :
+              var min = 30000;
+              var max = 100000;
+              break;
+          }
+        } else {
+          var min = 0;
+              var max = 100000;
+        }
+        
         const products = await models.Product.findAndCountAll({
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
+          order: [
+            [sortBy, dic],
+          ],
           where: {
             categoryId: Number(req.params.id),
             status : true,
@@ -165,6 +218,9 @@ class ProductController {
             },
             name: {
               [Op.like]: '%' + searchKey + '%'
+            },
+            price: {
+              [Op.between]: [min, max]
             }
           },
           include: [
@@ -391,9 +447,62 @@ class ProductController {
 
     async searchProduct(req, res) {
       try {
+        if(req.query.sort !== undefined) {
+          switch(req.query.sort) {
+            case "new" : 
+              var sortBy = 'createdAt';
+              var dic = 'DESC'
+              break;
+            case "sell" :
+              var sortBy = 'sold';
+              var dic = 'DESC'
+              break;
+            case "down" :
+              var sortBy = 'price';
+              var dic = 'DESC';
+              break;
+            case "up" :
+              var sortBy = 'price';
+              var dic = 'ASC'
+          }
+        } else {
+          var sortBy = 'sold';
+              var dic = 'DESC'
+        }
+        if(req.query.price !== undefined) {
+          switch(req.query.price) {
+            case "0" :
+              var min = 0;
+              var max = 100000;
+              break;
+            case "1" :
+              var min = 0;
+              var max = 10000;
+              break;
+            case "2" :
+              var min = 10000;
+              var max = 20000;
+              break;
+            case "3" :
+              var min = 20000;
+              var max = 30000;
+              break;
+            case "4" :
+              var min = 30000;
+              var max = 100000;
+              break;
+          }
+        } else {
+          var min = 0;
+              var max = 100000;
+        }
+        
         const products = await models.Product.findAndCountAll({
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 1000,
+          order: [
+            [sortBy, dic],
+          ],
           where: {
             status : true,
             quantity : {
@@ -401,6 +510,9 @@ class ProductController {
             },
             name: {
               [Op.like]: '%' + req.query.searchkey + '%'
+            },
+            price: {
+              [Op.between]: [min, max]
             }
           },
           include: [
@@ -422,6 +534,25 @@ class ProductController {
         const data = {}
         data.data = products
         return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
+    async getRateProduct(req, res) {
+      try {
+        const rate = await models.Review.findOne({
+          attributes: ['productId', [sequelize.fn('avg', sequelize.col('rate')), 'total']],
+          group : ['Review.productId'],
+          raw: true,
+          where: {
+            productId: Number(req.params.id)
+          },
+        })
+        if (!rate) {
+          return res.status(400).json('Error')
+        }
+        return res.status(200).json(rate)
       } catch (error) {
         return res.status(400).json(error.message)
       }
@@ -468,5 +599,21 @@ class ProductController {
       }
     }
 
+    async deleteProduct(req, res) {
+      try {
+        const product = await models.Product.findOne({
+          where: {
+            id: Number(req.params.id),
+          },
+        });
+        product.status = false;
+        if (product.save()) {
+          return res.status(200).json(product);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
 }
 module.exports = new ProductController()

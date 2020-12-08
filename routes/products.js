@@ -6,7 +6,7 @@ const productController = require('../controllers/ProductController')
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
@@ -25,6 +25,8 @@ router.get('/search', productController.searchProduct)
 
 router.get('/my-product/analyze', productController.getProductAnalyze)
 
+router.get('/rate/:id', productController.getRateProduct)
+
 router.get('/', productController.getAllProducts)
 
 router.get('/:id', productController.getOneProduct)
@@ -39,7 +41,7 @@ router.post('/', productController.createProduct)
 
 router.put('/:id', productController.updateProduct)
 
-// router.delete('/:id', auth.isAuthenticated, auth.isAdmin, userController.deleteUSer)
+router.delete('/:id', productController.deleteProduct)
 
 
 
