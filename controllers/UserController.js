@@ -145,6 +145,23 @@ class UserController {
       }
     }
 
+    async updateWallet(req, res) {
+      try {
+        const user = await models.User.findOne({
+          where: {
+            id: Number(req.params.id),
+          },
+        });
+        user.wallet = req.body.wallet;
+        if (user.save()) {
+          return res.status(200).json(user);        
+        }
+        return res.status(400).json('Error');
+      } catch (error) {
+        return res.status(400).json(error.message);
+      }
+    }
+
     async searchUser(req, res) {
       try {
         const users = await models.User.findAndCountAll({

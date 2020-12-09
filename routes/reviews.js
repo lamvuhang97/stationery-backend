@@ -15,4 +15,7 @@ router.get('/product/:productId', reviewController.getReviewByProduct)
 
 router.post('/', reviewController.postReview)
 
+router.delete('/:id', reviewController.deleteReview)
+
+
 module.exports = router;

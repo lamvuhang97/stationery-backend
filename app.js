@@ -16,6 +16,7 @@ var imageRouter = require('./routes/images');
 var paypalRouter = require('./routes/paypal');
 var reviewsRouter = require('./routes/reviews');
 var addressesRouter = require('./routes/addresses');
+var transactionsRouter = require('./routes/transactions');
 
 var app = express();
 
@@ -40,7 +41,8 @@ app.use('/carts', cartsRouter);
 app.use('/images', imageRouter);
 app.use('/paypal', paypalRouter);
 app.use('/reviews', reviewsRouter);
-app.use('/addresses', addressesRouter)
+app.use('/addresses', addressesRouter);
+app.use('/transactions', transactionsRouter);
 
 
 app.post("/webhook", async (req, res) => {

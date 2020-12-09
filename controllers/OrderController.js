@@ -47,6 +47,40 @@ class UserController {
         }
     }
 
+    async getOrderByStatus(req, res) {
+      try {
+        const orders = await models.Order.findAndCountAll({
+          offset: Number(req.query.offset),
+          limit: Number(req.query.limit),
+          where: {
+            statusId: req.params.id
+          },
+          include: [
+            {
+              model: models.User,
+              as: 'user'
+            },
+            {
+              model: models.Payment,
+              as: 'payment'
+            },
+            {
+              model: models.Status,
+              as: 'status'
+            }
+          ]
+        })
+        if (!orders) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = orders
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+  }
+
     async getOneOrder(req, res) { 
         try {
             const order = await models.Order.findOne({
@@ -61,6 +95,14 @@ class UserController {
                   {
                       model: models.User,
                       as: 'user'
+                  },
+                  {
+                    model: models.User,
+                    as: 'owner'
+                  },
+                  {
+                    model: models.Payment,
+                    as:'payment'
                   }
               ]
             })
@@ -68,9 +110,7 @@ class UserController {
               return res.status(200).json('Not found')
             }
             const data = {}
-            //order.dataValues.status = order.status.name // ddeer get role truc tiep bang user.role, khoong can user.role.name
-            order.dataValues.user = order.user.username 
-            data.order = order
+            data.data = order
             return res.status(200).json(data)
           } catch (error) {
             return res.status(400).json(error.message)

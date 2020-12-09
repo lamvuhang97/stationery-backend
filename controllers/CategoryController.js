@@ -47,7 +47,7 @@ class CategoryController {
           const category = await models.Category.findOne({
             
             where: {
-              name: req.params.name,
+              id: req.params.id,
             },
             include: [
               {

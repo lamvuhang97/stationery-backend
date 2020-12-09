@@ -15,6 +15,8 @@ router.use(function(req, res, next) {
 
 router.get('/', orderController.getAllOrders)
 
+router.get('/status/:id', orderController.getOrderByStatus)
+
 router.get('/my-transaction/:status', orderController.getMyTransaction)
 
 router.get('/my-order/analyze', orderController.getOrderAnalyze)

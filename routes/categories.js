@@ -6,7 +6,7 @@ const categoryController = require('../controllers/CategoryController')
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, DELETE");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
@@ -16,7 +16,7 @@ router.use(function(req, res, next) {
 
 router.get('/', categoryController.getAllCategories)
 
-router.get('/:name', categoryController.getOneCategory)  // get one category and product in it
+router.get('/:id', categoryController.getOneCategory)  // get one category and product in it
 
 router.post('/', categoryController.createCategory)
 

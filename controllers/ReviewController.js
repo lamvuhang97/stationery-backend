@@ -45,5 +45,18 @@ class ReviewController {
       return res.status(400).json(error.message)
     }
   }
+
+  async deleteReview(req, res) {
+    try {
+      await models.Review.destroy({
+        where: {
+          id: req.params.id
+        }
+      });
+      return res.status(200).json("success")
+    } catch (error) {
+      return res.status(400).json(error.message)
+    }
+  }
 }
 module.exports = new ReviewController()

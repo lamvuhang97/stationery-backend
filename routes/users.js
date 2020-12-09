@@ -23,6 +23,8 @@ router.get('/:id', userController.getOneUser)
 
 router.post('/', userController.createUser)
 
+router.put('/wallet/:id', userController.updateWallet)
+
 router.put('/:id', userController.updateUser)
 
 router.delete('/:id', auth.isAuthenticated, auth.isAdmin, userController.deleteUser)

@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'address'
       });
-      // User.hasMany(models.Order, {
-      //   foreignKey: 'ownerId',
-      //   as: 'orders'
-      // });
+      User.hasMany(models.Transaction, {
+        foreignKey: 'userId',
+        as: 'transaction'
+      });
       User.hasMany(models.Cart, {
         foreignKey: 'userId',
         as: 'carts'
@@ -42,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
     status: DataTypes.BOOLEAN,
-    avatar: DataTypes.STRING
+    avatar: DataTypes.STRING,
+    wallet: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',

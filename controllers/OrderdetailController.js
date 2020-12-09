@@ -46,7 +46,13 @@ class OrderdetailController {
                 {
                     where: {
                         orderId: Number(req.params.id)
-                    }
+                    },
+                    include: [
+                        {
+                            model: models.Product,
+                            as:'product'
+                        }
+                    ]
                 }
             )
             if (!orderdetails) {
