@@ -106,37 +106,118 @@ class ProductController {
 
     async getProductsByOwner(req, res) {
       try {
-        if(req.query.name !== undefined) {
-          var searchKey = req.query.name 
-        } else searchKey = ''
+        // if(req.query.name !== undefined) {
+        //   var searchKey = req.query.name 
+        // } else var searchKey = ''
+        if(req.query.sort !== undefined) {
+          switch(req.query.sort) {
+            case "new" : 
+              var sortBy = 'createdAt';
+              var dic = 'DESC'
+              break;
+            case "sell" :
+              var sortBy = 'sold';
+              var dic = 'DESC'
+              break;
+            case "down" :
+              var sortBy = 'price';
+              var dic = 'DESC';
+              break;
+            case "up" :
+              var sortBy = 'price';
+              var dic = 'ASC'
+          }
+        } else {
+          var sortBy = 'sold';
+              var dic = 'DESC'
+        }
+        if(req.query.price !== undefined) {
+          switch(req.query.price) {
+            case "0" :
+              var min = 0;
+              var max = 100000;
+              break;
+            case "1" :
+              var min = 0;
+              var max = 10;
+              break;
+            case "2" :
+              var min = 10;
+              var max = 50;
+              break;
+            case "3" :
+              var min = 50;
+              var max = 100;
+              break;
+            case "4" :
+              var min = 100;
+              var max = 100000;
+              break;
+          }
+        } else {
+          var min = 0;
+          var max = 100000;
+        }
         const products = await models.Product.findAndCountAll({
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
+          order: [
+            [sortBy, dic],
+          ],
           where: {
             ownerId: Number(req.params.id),
             status : true,
             quantity : {
               [Op.gt] : 0
             },
-            name: {
-              [Op.like]: '%' + searchKey + '%'
+            // name: {
+            //   [Op.like]: '%' + searchkey + '%'
+            // },
+            price: {
+              [Op.between]: [min, max]
             }
           },
           include: [
             {
-                model: models.Category,
-                as: 'category'
-            },
-            {
               model: models.Productimage,
               as: 'images',
-              include: [{
+              include: [
+                {
                 model: models.Image,
                 as: 'url'
-              }]
+                }
+              ]
             }
           ]
         })
+        // const products = await models.Product.findAndCountAll({
+        //   offset: Number(req.query.offset) || 0,
+        //   limit: Number(req.query.limit) || 15,
+        //   where: {
+        //     ownerId: Number(req.params.id),
+        //     status : true,
+        //     quantity : {
+        //       [Op.gt] : 0
+        //     },
+        //     name: {
+        //       [Op.like]: '%' + searchKey + '%'
+        //     }
+        //   },
+        //   include: [
+        //     {
+        //         model: models.Category,
+        //         as: 'category'
+        //     },
+        //     {
+        //       model: models.Productimage,
+        //       as: 'images',
+        //       include: [{
+        //         model: models.Image,
+        //         as: 'url'
+        //       }]
+        //     }
+        //   ]
+        // })
 
         if (!products) {
           return res.status(200).json('Not found')
@@ -184,18 +265,18 @@ class ProductController {
               break;
             case "1" :
               var min = 0;
-              var max = 10000;
+              var max = 10;
               break;
             case "2" :
-              var min = 10000;
-              var max = 20000;
+              var min = 10;
+              var max = 50;
               break;
             case "3" :
-              var min = 20000;
-              var max = 30000;
+              var min = 50;
+              var max = 100;
               break;
             case "4" :
-              var min = 30000;
+              var min = 100;
               var max = 100000;
               break;
           }
@@ -445,6 +526,30 @@ class ProductController {
       }
     }
 
+    async getAllProductAnalyze(req, res) {
+      try {
+        const product = await models.Product.findAll({
+          attributes: ['status', [sequelize.fn('count', sequelize.col('status')), 'number']],
+          group : ['status'],
+        })
+        if (!product) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        const sold = await models.Product.findAndCountAll({
+          where: {
+            quantity: 0
+          }
+        })
+        var soldNum = sold.count
+        data.data = product
+        data.sold = soldNum
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async searchProduct(req, res) {
       try {
         if(req.query.sort !== undefined) {
@@ -477,18 +582,18 @@ class ProductController {
               break;
             case "1" :
               var min = 0;
-              var max = 10000;
+              var max = 10;
               break;
             case "2" :
-              var min = 10000;
-              var max = 20000;
+              var min = 10;
+              var max = 50;
               break;
             case "3" :
-              var min = 20000;
-              var max = 30000;
+              var min = 50;
+              var max = 100;
               break;
             case "4" :
-              var min = 30000;
+              var min = 100;
               var max = 100000;
               break;
           }

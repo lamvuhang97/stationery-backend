@@ -102,6 +102,60 @@ class UserController {
         }
     }
 
+    async getUserAnalyze(req, res) {
+      try {
+        const day = await models.User.findAll({
+          where: {
+            status: true,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date()
+            }
+          }
+        })
+
+        const week = await models.User.findAll({
+          where: {
+            status: true,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 7*24 * 60 * 60 * 1000)
+            }
+          }
+        })
+
+        const month = await models.User.findAll({
+          where: {
+            status: true,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 30*24 * 60 * 60 * 1000)
+            }
+          }
+        })
+
+        const sum = await models.User.findAll()
+
+        const lock = await models.User.findAll({
+          where: {
+            status: false
+          }
+        })
+        var user = {
+          day: day,
+          week: week,
+          month: month,
+          sum: sum,
+          lock: lock
+        }
+        const data = {}
+        data.data = user
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async createUser(req, res) {
         try {
           // TODO: check user name unique

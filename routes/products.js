@@ -25,6 +25,8 @@ router.get('/search', productController.searchProduct)
 
 router.get('/my-product/analyze', productController.getProductAnalyze)
 
+router.get('/analyze', productController.getAllProductAnalyze)
+
 router.get('/rate/:id', productController.getRateProduct)
 
 router.get('/', productController.getAllProducts)

@@ -21,6 +21,8 @@ router.get('/my-transaction/:status', orderController.getMyTransaction)
 
 router.get('/my-order/analyze', orderController.getOrderAnalyze)
 
+router.get('/analyze', orderController.getAllOrderAnalyze)
+
 router.get('/my-order/sale-analyze', orderController.getSaleAnalyze)
 
 router.get('/my-order/:status', orderController.getMyOrder)

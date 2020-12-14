@@ -297,6 +297,23 @@ class UserController {
       }
     }
 
+    async getAllOrderAnalyze(req, res) {
+      try {
+        const order = await models.Order.findAll({
+          attributes: ['statusId', [sequelize.fn('count', sequelize.col('statusId')), 'number']],
+          group : ['statusId'],
+        })
+        if (!order) {
+          return res.status(200).json('Not found')
+        }
+        const data = {}
+        data.data = order
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
+    }
+
     async getSaleAnalyze(req, res) {
       try {
         const tokenFromHeader = auth.getJwtToken(req)
