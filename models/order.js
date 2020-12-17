@@ -39,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'orderId',
           as: 'transaction'
         })
+
+        Order.hasMany(models.History, {
+          foreignKey: 'orderId',
+          as: 'history'
+        })
     }
   };
   Order.init({

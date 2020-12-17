@@ -1,15 +1,29 @@
 'use strict';
+
+const { UnavailableForLegalReasons } = require("http-errors");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Statuses', {
+    await queryInterface.createTable('Histories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
+      orderId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Orders',
+          key: 'id'
+        }
+      },
+      statusId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Statuses',
+          key: 'id'
+        }
       },
       detail: {
         type: Sequelize.STRING
@@ -25,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Statuses');
+    await queryInterface.dropTable('Histories');
   }
 };

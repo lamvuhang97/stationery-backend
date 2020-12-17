@@ -9,11 +9,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        name: 'Stripe',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
         name: 'Paypal',
         createdAt: new Date(),
         updatedAt: new Date()

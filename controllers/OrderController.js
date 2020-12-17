@@ -403,6 +403,23 @@ class UserController {
         }
     }
 
+    async updateOrderStatus(req, res) {
+      try {
+          const order = await models.Order.findOne({
+              where: {
+                  id: Number(req.params.id),
+              },
+          });
+          order.statusId = Number(req.body.statusId)
+          if (order.save()) {
+              return res.status(200).json(order);        
+            }
+            return res.status(400).json('Error');
+          } catch (error) {
+            return res.status(400).json(error.message);
+      }
+  }
+
 
 }
 module.exports = new UserController()
