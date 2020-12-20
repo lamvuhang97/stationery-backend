@@ -123,9 +123,18 @@ class UserController {
         const account = jwt.decode(tokenFromHeader)
         var wheretmp = {}
         if(Number(req.params.status) !== 0) {
-          wheretmp = {
-            userId: Number(account.payload.id),
-            statusId: Number(req.params.status)
+          if(Number(req.params.status == 6)) {
+            wheretmp = {
+              userId: Number(account.payload.id),
+              statusId: {
+                [Op.in]: [6,7,8]
+              }
+            }
+          } else {
+            wheretmp = {
+              userId: Number(account.payload.id),
+              statusId: Number(req.params.status)
+            }
           }
         } else {
           wheretmp = {
@@ -173,9 +182,18 @@ class UserController {
         const account = jwt.decode(tokenFromHeader)
         var wheretmp = {}
         if(Number(req.params.status) !== 0) {
-          wheretmp = {
-            ownerId: Number(account.payload.id),
-            statusId: Number(req.params.status)
+          if(Number(req.params.status) == 6) {
+            wheretmp = {
+              ownerId: Number(account.payload.id),
+              statusId: {
+                [Op.in] : [6,7,8]
+              }
+            }
+          } else {
+            wheretmp = {
+              ownerId: Number(account.payload.id),
+              statusId: Number(req.params.status)
+            }
           }
         } else {
           wheretmp = {
@@ -312,6 +330,39 @@ class UserController {
       } catch (error) {
         return res.status(400).json(error.message)
       }
+    }  
+
+    async getSaleAnalyzeDayInWeek(req, res) {
+      try {
+        const tokenFromHeader = auth.getJwtToken(req)
+        const account = jwt.decode(tokenFromHeader)
+
+        const order = await models.Order.findAll({
+          attributes: [
+            [sequelize.fn('SUM', sequelize.col('total')), 'total'],
+            [sequelize.fn( 'date', sequelize.col('createdAt')), 'createdOn'],
+          ],
+          where: { 
+            ownerId: Number(account.payload.id),
+            statusId: 9,
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 30*24 * 60 * 60 * 1000)
+            }
+            // [Op.and]: [
+            //   {customerAccountId: customerAccountId},
+            // ] 
+          },
+          order: [[sequelize.literal('"createdOn"'), 'ASC']],
+          group: 'createdOn'
+        })
+
+        const data = {}
+        data.data = order
+        return res.status(200).json(data)
+      } catch (error) {
+        return res.status(400).json(error.message)
+      }
     }
 
     async getSaleAnalyze(req, res) {
@@ -321,7 +372,7 @@ class UserController {
         const day = await models.Order.findAll({
           where: {
             ownerId: Number(account.payload.id),
-            statusId: 4,
+            statusId: 9,
             createdAt: {
               [Op.lt]: new Date(),
               [Op.gt]: new Date()
@@ -332,7 +383,7 @@ class UserController {
         const week = await models.Order.findAll({
           where: {
             ownerId: Number(account.payload.id),
-            statusId: 4,
+            statusId: 9,
             createdAt: {
               [Op.lt]: new Date(),
               [Op.gt]: new Date(new Date() - 7*24 * 60 * 60 * 1000)
@@ -343,7 +394,7 @@ class UserController {
         const month = await models.Order.findAll({
           where: {
             ownerId: Number(account.payload.id),
-            statusId: 4,
+            statusId: 9,
             createdAt: {
               [Op.lt]: new Date(),
               [Op.gt]: new Date(new Date() - 30*24 * 60 * 60 * 1000)
@@ -354,7 +405,7 @@ class UserController {
         const sum = await models.Order.findAll({
           where: {
             ownerId: Number(account.payload.id),
-            statusId: 4
+            statusId: 9
           }
         })
         var sale = {

@@ -18,6 +18,7 @@ var reviewsRouter = require('./routes/reviews');
 var addressesRouter = require('./routes/addresses');
 var transactionsRouter = require('./routes/transactions');
 var historiesRouter = require('./routes/histories');
+var exportexcelRouter = require('./routes/exportexcel');
 
 var app = express();
 
@@ -45,6 +46,7 @@ app.use('/reviews', reviewsRouter);
 app.use('/addresses', addressesRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/histories', historiesRouter);
+app.use('/exportexcel', exportexcelRouter);
 
 
 app.post("/webhook", async (req, res) => {

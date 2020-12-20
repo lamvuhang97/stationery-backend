@@ -19,17 +19,17 @@ let requestBody = {
       "recipient_type": "EMAIL",
       "email_message": "SDK payouts test txn",
       "note": "Enjoy your Payout!!",
-      "sender_batch_id": "asaospdu0fsefefjujghnwfasdaxkj",
+      "sender_batch_id": req.body.random1,
       "email_subject": "This is a test transaction from SDK"
     },
     "items": [{
       "note": "Your 5$ Payout!",
       "amount": {
         "currency": "USD",
-        "value": "12.00"
+        "value": req.body.amount
       },
-      "receiver": "sb-ztm5c3958753@personal.example.com",
-      "sender_item_id": "asldksksuxawdwe324r4wdfsawdewrdasdsdydowishdih"
+      "receiver": req.body.email,
+      "sender_item_id": req.body.ramdom2
     }]
   }
 

@@ -3,6 +3,7 @@ const _ = require('lodash');
 const jwt = require('jsonwebtoken');
 const models = require('../models')
 const config = require('../config/app')
+const { Op } = require("sequelize");
 class AuthController {
     async login(req, res) {
 		try {
@@ -57,7 +58,9 @@ class AuthController {
 			const options = {
                 where: {
                     username: req.body.username,
-                    roleId: 1,
+                    roleId: {
+						[Op.in] : [1,3]
+					},
                     status: true
 				},
 			};

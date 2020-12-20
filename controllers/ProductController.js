@@ -158,6 +158,14 @@ class ProductController {
           var min = 0;
           var max = 100000;
         }
+        var status
+        if(req.query.status != undefined) {
+          status = {
+            [Op.in] : [true, false]
+          }
+        } else {
+          status = true
+        }
         const products = await models.Product.findAndCountAll({
           offset: Number(req.query.offset) || 0,
           limit: Number(req.query.limit) || 15,
@@ -166,7 +174,7 @@ class ProductController {
           ],
           where: {
             ownerId: Number(req.params.id),
-            status : true,
+            status : status,
             quantity : {
               [Op.gt] : 0
             },
@@ -187,6 +195,10 @@ class ProductController {
                 as: 'url'
                 }
               ]
+            },
+            {
+              model:models.Category,
+              as: 'category'
             }
           ]
         })
